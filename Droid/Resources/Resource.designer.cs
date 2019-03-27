@@ -79,6 +79,12 @@ namespace XamForms.Enhanced.ImageMap.Droid
 			// aapt resource value: 0x7f020000
 			public const int Icon = 2130837504;
 			
+			// aapt resource value: 0x7f020001
+			public const int p2_ship_default = 2130837505;
+			
+			// aapt resource value: 0x7f020002
+			public const int p2_ship_mask = 2130837506;
+			
 			static Mipmap()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
