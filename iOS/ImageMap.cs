@@ -31,7 +31,7 @@ namespace XamForms.Enhanced.ImageMap.iOS
             set
             {
                 maskImage = value;
-                maskImageView.Image = mapImage;
+                maskImageView.Image = maskImage;
             }
         }
 
