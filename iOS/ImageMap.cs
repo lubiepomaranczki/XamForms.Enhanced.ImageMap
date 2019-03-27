@@ -41,6 +41,17 @@ namespace XamForms.Enhanced.ImageMap.iOS
             }
         }
 
+        public override UIViewContentMode ContentMode
+        {
+            get { return base.ContentMode; }
+            set
+            {
+                base.ContentMode = value;
+                mapImageView.ContentMode = value;
+                maskImageView.ContentMode = value;
+            }
+        }
+
         private void InitializeControl()
         {
             maskImageView = new UIImageView
