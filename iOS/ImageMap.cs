@@ -8,7 +8,7 @@ namespace XamForms.Enhanced.ImageMap.iOS
         private UIImage image;
 
         private UIImageView maskImageView;
-        private UIImageView imageView;
+        private UIImageView mapImageView;
 
         public ImageMap()
         {
@@ -30,13 +30,14 @@ namespace XamForms.Enhanced.ImageMap.iOS
                 maskImageView.Image = image;
             }
         }
+
         public UIImage MapImage
         {
             get => image;
             set
             {
                 image = value;
-                imageView.Image = image;
+                mapImageView.Image = image;
             }
         }
 
@@ -53,16 +54,16 @@ namespace XamForms.Enhanced.ImageMap.iOS
             maskImageView.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
             maskImageView.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
 
-            imageView = new UIImageView
+            mapImageView = new UIImageView
             {
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
-            Add(imageView);
+            Add(mapImageView);
 
-            imageView.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
-            imageView.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
-            imageView.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
-            imageView.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
+            mapImageView.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
+            mapImageView.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
+            mapImageView.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
+            mapImageView.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
         }
     }
 }
