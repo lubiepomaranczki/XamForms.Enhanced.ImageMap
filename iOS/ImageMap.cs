@@ -1,11 +1,15 @@
 ﻿using UIKit;
+using System;
+using CoreGraphics;
+using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace XamForms.Enhanced.ImageMap.iOS
 {
     public sealed class ImageMap : UIView
     {
         private UIImage maskImage;
-        private UIImage image;
+        private UIImage mapImage;
 
         private UIImageView maskImageView;
         private UIImageView mapImageView;
@@ -27,17 +31,17 @@ namespace XamForms.Enhanced.ImageMap.iOS
             set
             {
                 maskImage = value;
-                maskImageView.Image = image;
+                maskImageView.Image = mapImage;
             }
         }
 
         public UIImage MapImage
         {
-            get => image;
+            get => mapImage;
             set
             {
-                image = value;
-                mapImageView.Image = image;
+                mapImage = value;
+                mapImageView.Image = mapImage;
             }
         }
 
@@ -67,7 +71,8 @@ namespace XamForms.Enhanced.ImageMap.iOS
 
             mapImageView = new UIImageView
             {
-                TranslatesAutoresizingMaskIntoConstraints = false
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                UserInteractionEnabled = true
             };
             Add(mapImageView);
 
@@ -75,6 +80,51 @@ namespace XamForms.Enhanced.ImageMap.iOS
             mapImageView.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
             mapImageView.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
             mapImageView.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
+
+            mapImageView.AddGestureRecognizer(new UITapGestureRecognizer(HandleTap));
+        }
+
+        private void HandleTap(UITapGestureRecognizer tap)
+        {
+            if (tap == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var tappedLocationPoint = tap.LocationInView(maskImageView);
+
+            var color = GetPixelColor(new PointF((float)tappedLocationPoint.X, (float)tappedLocationPoint.Y), maskImage);
+            color.GetRGBA(out var red, out var green, out var blue, out var alpha);
+            Console.WriteLine($"{red} {green} {blue}");
+        }
+
+        //TODO need to scale the image with ContentMode taking into consideration
+        private UIColor GetPixelColor(PointF myPoint, UIImage myImage)
+        {
+            var rawData = new byte[4];
+            var handle = GCHandle.Alloc(rawData);
+            UIColor resultColor = null;
+            try
+            {
+                using (var colorSpace = CGColorSpace.CreateDeviceRGB())
+                {
+                    using (var context = new CGBitmapContext(rawData, 1, 1, 8, 4, colorSpace, CGImageAlphaInfo.PremultipliedLast))
+                    {
+                        context.DrawImage(new RectangleF(-myPoint.X, (float)(myPoint.Y - myImage.Size.Height), (float)myImage.Size.Width, (float)myImage.Size.Height), myImage.CGImage);
+                        float red = rawData[0] / 255.0f;
+                        float green = rawData[1] / 255.0f;
+                        float blue = rawData[2] / 255.0f;
+                        float alpha = rawData[3] / 255.0f;
+                        resultColor = UIColor.FromRGBA(red, green, blue, alpha);
+                    }
+                }
+            }
+            finally
+            {
+                handle.Free();
+            }
+
+            return resultColor;
         }
     }
 }
