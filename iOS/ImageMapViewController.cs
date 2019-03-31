@@ -4,6 +4,8 @@ namespace XamForms.Enhanced.ImageMap.iOS
 {
     public class ImageMapViewController : UIViewController
     {
+        private UIView controlBox;
+
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
@@ -18,8 +20,8 @@ namespace XamForms.Enhanced.ImageMap.iOS
             var imageMap = new ImageMap
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                MaskImage = UIImage.FromBundle("p2_ship_mask"),
-                MapImage = UIImage.FromBundle("p2_ship_default"),
+                MapImage = UIImage.FromBundle("p2_ship_mask"),
+                MaskImage = UIImage.FromBundle("p2_ship_default"),
                 ContentMode = UIViewContentMode.ScaleAspectFit
             };
             Add(imageMap);
@@ -28,6 +30,20 @@ namespace XamForms.Enhanced.ImageMap.iOS
             imageMap.TopAnchor.ConstraintEqualTo(View.TopAnchor).Active = true;
             imageMap.RightAnchor.ConstraintEqualTo(View.RightAnchor).Active = true;
             imageMap.BottomAnchor.ConstraintEqualTo(View.CenterYAnchor).Active = true;
+            imageMap.OnAreaTapped += ImageMap_OnAreaTapped;
+
+            controlBox = new UIView { TranslatesAutoresizingMaskIntoConstraints = false };
+            Add(controlBox);
+
+            controlBox.TopAnchor.ConstraintEqualTo(imageMap.BottomAnchor, 16).Active = true;
+            controlBox.CenterXAnchor.ConstraintEqualTo(View.CenterXAnchor).Active = true;
+            controlBox.WidthAnchor.ConstraintEqualTo(32).Active = true;
+            controlBox.HeightAnchor.ConstraintEqualTo(32).Active = true;
+        }
+
+        private void ImageMap_OnAreaTapped(object sender, ImageMapSelected e)
+        {
+            controlBox.BackgroundColor = e.Color;
         }
     }
 }

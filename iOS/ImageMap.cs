@@ -56,6 +56,8 @@ namespace XamForms.Enhanced.ImageMap.iOS
             }
         }
 
+        public event EventHandler<ImageMapSelected> OnAreaTapped;
+
         private void InitializeControl()
         {
             maskImageView = new UIImageView
@@ -95,7 +97,8 @@ namespace XamForms.Enhanced.ImageMap.iOS
 
             var color = GetPixelColor(new PointF((float)tappedLocationPoint.X, (float)tappedLocationPoint.Y), maskImage);
             color.GetRGBA(out var red, out var green, out var blue, out var alpha);
-            Console.WriteLine($"{red} {green} {blue}");
+
+            OnAreaTapped.Invoke(this, new ImageMapSelected(color));
         }
 
         //TODO need to scale the image with ContentMode taking into consideration
@@ -126,5 +129,15 @@ namespace XamForms.Enhanced.ImageMap.iOS
 
             return resultColor;
         }
+    }
+
+    public class ImageMapSelected : EventArgs
+    {
+        public ImageMapSelected(UIColor color)
+        {
+            Color = color;
+        }
+
+        public UIColor Color { get; }
     }
 }
