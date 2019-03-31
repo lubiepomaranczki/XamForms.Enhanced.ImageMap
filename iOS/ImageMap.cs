@@ -95,10 +95,11 @@ namespace XamForms.Enhanced.ImageMap.iOS
 
             var tappedLocationPoint = tap.LocationInView(maskImageView);
 
-            var color = GetPixelColor(new PointF((float)tappedLocationPoint.X, (float)tappedLocationPoint.Y), maskImage);
-            color.GetRGBA(out var red, out var green, out var blue, out var alpha);
+            MapImage = ResizeImage(maskImage, mapImageView.Frame.Size);
+            //var color = GetPixelColor(new PointF((float)tappedLocationPoint.X, (float)tappedLocationPoint.Y), resizedImage);
+            //color.GetRGBA(out var red, out var green, out var blue, out var alpha);
 
-            OnAreaTapped.Invoke(this, new ImageMapSelected(color));
+            //OnAreaTapped.Invoke(this, new ImageMapSelected(color));
         }
 
         //TODO need to scale the image with ContentMode taking into consideration
@@ -128,6 +129,31 @@ namespace XamForms.Enhanced.ImageMap.iOS
             }
 
             return resultColor;
+        }
+
+        private UIImage ResizeImage(UIImage image, CGSize targetSize)
+        {
+            var size = image.Size;
+            var widthRatio = targetSize.Width / size.Width;
+            var heightRatio = targetSize.Height / size.Height;
+
+            CGSize newSize;
+            if (widthRatio > heightRatio)
+            {
+                newSize = new CGSize(size.Width * heightRatio, size.Height * heightRatio);
+            }
+            else
+            {
+                newSize = new CGSize(size.Width * widthRatio, size.Height * widthRatio);
+            }
+
+            var rect = new CGRect(0, 0, newSize.Width, newSize.Height);
+            UIGraphics.BeginImageContextWithOptions(newSize, false, 1.0f);
+            image.DrawAsPatternInRect(rect);
+            var newImage = UIGraphics.GetImageFromCurrentImageContext();
+            UIGraphics.EndImageContext();
+
+            return newImage;
         }
     }
 
