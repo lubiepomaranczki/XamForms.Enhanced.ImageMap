@@ -21,7 +21,7 @@ namespace XamForms.Enhanced.ImageMap.iOS
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 MapImage = UIImage.FromBundle("p2_ship_mask"),
-                MaskImage = UIImage.FromBundle("p2_ship_default"),
+                MaskImage = UIImage.FromBundle("p2_ship_mask"),
                 ContentMode = UIViewContentMode.ScaleAspectFit
             };
             Add(imageMap);
@@ -41,7 +41,7 @@ namespace XamForms.Enhanced.ImageMap.iOS
             controlBox.HeightAnchor.ConstraintEqualTo(32).Active = true;
         }
 
-        private void ImageMap_OnAreaTapped(object sender, ImageMapSelected e)
+        private void ImageMap_OnAreaTapped(object sender, ImageMapRegionSelected e)
         {
             controlBox.BackgroundColor = e.Color;
         }

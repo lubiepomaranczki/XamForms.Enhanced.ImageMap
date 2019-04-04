@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Events\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -113,6 +114,7 @@
     </Compile>
     <Compile Include="ImageMap.cs" />
     <Compile Include="ImageMapViewController.cs" />
+    <Compile Include="Events\ImageMapRegionSelected.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\p2_ship_default.png" />

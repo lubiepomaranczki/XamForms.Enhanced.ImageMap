@@ -56,7 +56,7 @@ namespace XamForms.Enhanced.ImageMap.iOS
             }
         }
 
-        public event EventHandler<ImageMapSelected> OnAreaTapped;
+        public event EventHandler<ImageMapRegionSelected> OnAreaTapped;
 
         private void InitializeControl()
         {
@@ -98,7 +98,7 @@ namespace XamForms.Enhanced.ImageMap.iOS
             var color = GetPixelColor(new PointF((float)tappedLocationPoint.X, (float)tappedLocationPoint.Y), resizedImage);
             color.GetRGBA(out var red, out var green, out var blue, out var alpha);
 
-            OnAreaTapped.Invoke(this, new ImageMapSelected(color));
+            OnAreaTapped.Invoke(this, new ImageMapRegionSelected(color));
         }
 
         private UIColor GetPixelColor(PointF myPoint, UIImage myImage)
@@ -140,15 +140,5 @@ namespace XamForms.Enhanced.ImageMap.iOS
 
             return newImage;
         }
-    }
-
-    public class ImageMapSelected : EventArgs
-    {
-        public ImageMapSelected(UIColor color)
-        {
-            Color = color;
-        }
-
-        public UIColor Color { get; }
     }
 }
