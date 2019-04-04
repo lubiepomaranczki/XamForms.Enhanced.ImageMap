@@ -20,7 +20,7 @@ namespace XamForms.Enhanced.ImageMap.iOS
             var imageMap = new ImageMap
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                MapImage = UIImage.FromBundle("p2_ship_mask"),
+                MapImage = UIImage.FromBundle("p2_ship_default"),
                 MaskImage = UIImage.FromBundle("p2_ship_mask"),
                 ContentMode = UIViewContentMode.ScaleAspectFit
             };

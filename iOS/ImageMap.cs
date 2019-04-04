@@ -62,7 +62,8 @@ namespace XamForms.Enhanced.ImageMap.iOS
         {
             maskImageView = new UIImageView
             {
-                TranslatesAutoresizingMaskIntoConstraints = false
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                UserInteractionEnabled = true
             };
             Add(maskImageView);
 
@@ -71,10 +72,11 @@ namespace XamForms.Enhanced.ImageMap.iOS
             maskImageView.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
             maskImageView.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
 
+            maskImageView.AddGestureRecognizer(new UITapGestureRecognizer(HandleTap));
+
             mapImageView = new UIImageView
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                UserInteractionEnabled = true
             };
             Add(mapImageView);
 
@@ -82,8 +84,6 @@ namespace XamForms.Enhanced.ImageMap.iOS
             mapImageView.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
             mapImageView.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
             mapImageView.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
-
-            mapImageView.AddGestureRecognizer(new UITapGestureRecognizer(HandleTap));
         }
 
         private void HandleTap(UITapGestureRecognizer tap)
@@ -94,9 +94,8 @@ namespace XamForms.Enhanced.ImageMap.iOS
             }
 
             var tappedLocationPoint = tap.LocationInView(maskImageView);
-            var resizedImage = ResizeImage(maskImage, mapImageView.Frame.Size);
+            var resizedImage = ResizeImage(maskImageView.Frame.Size);
             var color = GetPixelColor(new PointF((float)tappedLocationPoint.X, (float)tappedLocationPoint.Y), resizedImage);
-            color.GetRGBA(out var red, out var green, out var blue, out var alpha);
 
             OnAreaTapped.Invoke(this, new ImageMapRegionSelected(color));
         }
@@ -130,11 +129,11 @@ namespace XamForms.Enhanced.ImageMap.iOS
             return resultColor;
         }
 
-        private UIImage ResizeImage(UIImage image, CGSize targetSize)
+        private UIImage ResizeImage(CGSize targetSize)
         {
             UIGraphics.BeginImageContextWithOptions(targetSize, false, 1.0f);
             var context = UIGraphics.GetCurrentContext();
-            mapImageView.Layer.RenderInContext(context);
+            maskImageView.Layer.RenderInContext(context);
             var newImage = UIGraphics.GetImageFromCurrentImageContext();
             UIGraphics.EndImageContext();
 
