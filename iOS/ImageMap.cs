@@ -13,6 +13,7 @@ namespace XamForms.Enhanced.ImageMap.iOS
 
         private UIImageView maskImageView;
         private UIImageView mapImageView;
+        private ImageMapViewModel viewModel;
 
         public ImageMap()
         {
@@ -23,6 +24,23 @@ namespace XamForms.Enhanced.ImageMap.iOS
         {
             MapImage = mapImage;
             MaskImage = maskImage;
+        }
+
+        public ImageMapViewModel ViewModel
+        {
+            get => viewModel;
+            set
+            {
+                viewModel = value;
+                UpdateFromViewModel();
+            }
+        }
+
+        private void UpdateFromViewModel()
+        {
+            MaskImage = viewModel.MaskImage;
+            MapImage = viewModel.MapImage;
+            ContentMode = viewModel.ContentMode;
         }
 
         public UIImage MaskImage

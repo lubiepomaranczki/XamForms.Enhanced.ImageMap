@@ -115,6 +115,7 @@
     <Compile Include="ImageMap.cs" />
     <Compile Include="ImageMapViewController.cs" />
     <Compile Include="Events\ImageMapRegionSelected.cs" />
+    <Compile Include="ImageMapViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\p2_ship_default.png" />
