@@ -3,6 +3,8 @@ using System;
 using CoreGraphics;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace XamForms.Enhanced.ImageMap.iOS
 {
@@ -36,13 +38,6 @@ namespace XamForms.Enhanced.ImageMap.iOS
             }
         }
 
-        private void UpdateFromViewModel()
-        {
-            MaskImage = viewModel.MaskImage;
-            MapImage = viewModel.MapImage;
-            ContentMode = viewModel.ContentMode;
-        }
-
         public UIImage MaskImage
         {
             get => maskImage;
@@ -62,6 +57,8 @@ namespace XamForms.Enhanced.ImageMap.iOS
                 mapImageView.Image = mapImage;
             }
         }
+
+        public IList<ImageMapArea> Areas { get; set; }
 
         public override UIViewContentMode ContentMode
         {
@@ -104,6 +101,13 @@ namespace XamForms.Enhanced.ImageMap.iOS
             mapImageView.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
         }
 
+        private void UpdateFromViewModel()
+        {
+            MaskImage = viewModel.MaskImage;
+            MapImage = viewModel.MapImage;
+            ContentMode = viewModel.ContentMode;
+        }
+
         private void HandleTap(UITapGestureRecognizer tap)
         {
             if (tap == null)
@@ -115,7 +119,12 @@ namespace XamForms.Enhanced.ImageMap.iOS
             var resizedImage = ResizeImage(maskImageView.Frame.Size);
             var color = GetPixelColor(new PointF((float)tappedLocationPoint.X, (float)tappedLocationPoint.Y), resizedImage);
 
-            OnAreaTapped.Invoke(this, new ImageMapRegionSelected(color));
+            if (Areas == null)
+            {
+                throw new Exception($"In {nameof(HandleTap)} {nameof(Areas)} can't be null");
+            }
+            var tappedArea = Areas.FirstOrDefault(area => area.Color == color);
+            OnAreaTapped?.Invoke(this, new ImageMapRegionSelected(tappedArea));
         }
 
         private UIColor GetPixelColor(PointF myPoint, UIImage myImage)
@@ -157,5 +166,17 @@ namespace XamForms.Enhanced.ImageMap.iOS
 
             return newImage;
         }
+    }
+
+    public class ImageMapArea
+    {
+        public ImageMapArea(UIColor color, object areaObject)
+        {
+            Color = color;
+            AreaObject = areaObject;
+        }
+
+        public UIColor Color { get; set; }
+        public object AreaObject { get; set; }
     }
 }
