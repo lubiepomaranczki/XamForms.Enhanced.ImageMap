@@ -1,15 +1,14 @@
 ﻿using System;
-using UIKit;
 
 namespace XamForms.Enhanced.ImageMap.iOS
 {
     public class ImageMapRegionSelected : EventArgs
     {
-        public ImageMapRegionSelected(UIColor color)
+        public ImageMapRegionSelected(object region)
         {
-            Color = color;
+            Region = region;
         }
 
-        public UIColor Color { get; }
+        public object Region { get; }
     }
 }

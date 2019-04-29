@@ -1,4 +1,5 @@
 ﻿using UIKit;
+using System.Collections.Generic;
 
 namespace XamForms.Enhanced.ImageMap.iOS
 {
@@ -22,7 +23,8 @@ namespace XamForms.Enhanced.ImageMap.iOS
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 MapImage = UIImage.FromBundle("p2_ship_default"),
                 MaskImage = UIImage.FromBundle("p2_ship_mask"),
-                ContentMode = UIViewContentMode.ScaleAspectFit
+                ContentMode = UIViewContentMode.ScaleAspectFit,
+                Areas = new List<ImageMapArea> { new ImageMapArea(UIColor.FromRGBA(255, 38, 0, 255), "test") }
             };
             Add(imageMap);
 
@@ -43,7 +45,7 @@ namespace XamForms.Enhanced.ImageMap.iOS
 
         private void ImageMap_OnAreaTapped(object sender, ImageMapRegionSelected e)
         {
-            controlBox.BackgroundColor = e.Color;
+            //controlBox.BackgroundColor = e.Color;
         }
     }
 }
